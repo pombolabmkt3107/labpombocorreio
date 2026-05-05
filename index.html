@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laboratório do Pombo Correio — Marketing que Voa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --creme: #dfdbce;
+    --verde: #49826a;
+    --laranja: #ed852b;
+    --escuro: #1a1a18;
+    --creme-escuro: #c8c4b4;
+    --verde-escuro: #2e5243;
+    --verde-claro: #d0e8df;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--creme);
+    color: var(--escuro);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: var(--creme);
+    border-bottom: 1px solid var(--creme-escuro);
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+
+  .logo {
+    display: flex; align-items: center; gap: 0;
+    text-decoration: none; color: var(--escuro);
+  }
+  .logo-img {
+    height: 52px; width: auto;
+    display: block;
+  }
+
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--escuro); font-size: 0.88rem; font-weight: 400; letter-spacing: 0.03em; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--verde); }
+
+  .nav-cta {
+    background: var(--verde); color: #fff;
+    padding: 0.6rem 1.4rem; border-radius: 100px;
+    text-decoration: none; font-size: 0.85rem; font-weight: 500;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .nav-cta:hover { background: var(--verde-escuro); transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr; align-items: center;
+    padding: 8rem 4rem 4rem;
+    position: relative; overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute; right: -5%; top: 10%;
+    width: 55%; height: 80%;
+    background: var(--verde);
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    opacity: 0.08;
+    animation: morph 12s ease-in-out infinite;
+  }
+
+  @keyframes morph {
+    0%,100% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+    50% { border-radius: 60% 40% 30% 70% / 50% 60% 40% 60%; }
+  }
+
+  .hero-content { max-width: 560px; }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--verde-claro); color: var(--verde-escuro);
+    padding: 0.4rem 1rem; border-radius: 100px;
+    font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em;
+    text-transform: uppercase; margin-bottom: 1.5rem;
+  }
+  .hero-badge::before { content: '●'; color: var(--verde); font-size: 0.5rem; }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.6rem, 5vw, 4.2rem);
+    line-height: 1.08; font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--verde); }
+  .hero h1 .accent { color: var(--laranja); }
+
+  .hero-desc {
+    font-size: 1.05rem; line-height: 1.8; color: #4a4a45;
+    margin-bottom: 2.5rem; max-width: 440px; font-weight: 300;
+  }
+
+  .hero-actions { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: var(--laranja); color: #fff;
+    padding: 0.85rem 2rem; border-radius: 100px;
+    text-decoration: none; font-size: 0.9rem; font-weight: 500;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(237,133,43,0.35);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(237,133,43,0.4); }
+
+  .btn-ghost {
+    color: var(--escuro); text-decoration: none;
+    font-size: 0.9rem; font-weight: 400;
+    display: flex; align-items: center; gap: 6px;
+    transition: gap 0.2s;
+  }
+  .btn-ghost:hover { gap: 10px; }
+  .btn-ghost::after { content: '→'; }
+
+  .hero-visual {
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+
+  .hero-card-stack { position: relative; width: 360px; height: 400px; }
+
+  .hero-card {
+    position: absolute;
+    background: #fff; border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .hc1 { width: 280px; top: 0; left: 40px; animation-delay: 0s; }
+  .hc2 { width: 220px; bottom: 20px; left: 0; animation-delay: -2s; background: var(--verde); color: #fff; }
+  .hc3 { width: 160px; top: 60px; right: 0; animation-delay: -4s; background: var(--laranja); color: #fff; }
+
+  @keyframes float {
+    0%,100% { transform: translateY(0px); }
+    50% { transform: translateY(-14px); }
+  }
+
+  .hc-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.6; margin-bottom: 0.5rem; }
+  .hc-value { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; }
+  .hc-sub { font-size: 0.75rem; margin-top: 0.3rem; opacity: 0.7; }
+  .hc-bar { height: 4px; border-radius: 2px; background: rgba(255,255,255,0.3); margin-top: 1rem; }
+  .hc-bar-fill { height: 100%; border-radius: 2px; background: var(--laranja); width: 72%; }
+  .hc1 .hc-bar-fill { background: var(--verde); }
+
+  /* CLIENTES (TICKER) */
+  .ticker-section {
+    background: var(--verde);
+    padding: 1rem 0; overflow: hidden;
+  }
+  .ticker-track {
+    display: flex; gap: 4rem;
+    animation: ticker 20s linear infinite;
+    white-space: nowrap; width: max-content;
+  }
+  @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .ticker-item { color: rgba(255,255,255,0.6); font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; }
+  .ticker-dot { color: var(--laranja); }
+
+  /* SEÇÕES GERAIS */
+  section { padding: 6rem 4rem; }
+
+  .section-label {
+    font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--verde); font-weight: 500; margin-bottom: 0.8rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    line-height: 1.15; font-weight: 700;
+    margin-bottom: 1.2rem;
+  }
+  .section-title em { font-style: italic; color: var(--laranja); }
+  .section-desc { font-size: 1rem; line-height: 1.85; color: #4a4a45; max-width: 500px; font-weight: 300; }
+
+  /* SOBRE */
+  .sobre {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6rem;
+    align-items: center;
+  }
+  .sobre-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2.5rem;
+  }
+  .stat-box {
+    background: #fff; border-radius: 16px; padding: 1.5rem;
+    border-left: 3px solid var(--verde);
+  }
+  .stat-box.orange { border-left-color: var(--laranja); }
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem; font-weight: 700; color: var(--escuro);
+  }
+  .stat-label { font-size: 0.8rem; color: #777; margin-top: 0.2rem; }
+
+  .sobre-visual {
+    position: relative; height: 480px;
+  }
+  .sobre-bg-box {
+    position: absolute; inset: 0;
+    background: var(--verde-claro);
+    border-radius: 24px;
+  }
+  .sobre-img-box {
+    position: absolute; top: 2rem; left: 2rem; right: -2rem; bottom: -2rem;
+    background: var(--creme-escuro);
+    border-radius: 24px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .sobre-pigeon { font-size: 8rem; opacity: 0.18; }
+  .sobre-quote {
+    position: absolute; bottom: 2rem; left: -2rem;
+    background: #fff; border-radius: 16px; padding: 1.2rem 1.5rem;
+    max-width: 240px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  }
+  .sobre-quote p { font-size: 0.85rem; line-height: 1.6; color: var(--escuro); font-style: italic; }
+  .sobre-quote span { font-size: 0.72rem; color: var(--verde); font-weight: 500; margin-top: 0.5rem; display: block; }
+
+  /* SERVIÇOS */
+  .servicos { background: var(--escuro); }
+  .servicos .section-label { color: var(--laranja); }
+  .servicos .section-title { color: var(--creme); }
+  .servicos .section-desc { color: rgba(223,219,206,0.6); }
+
+  .servicos-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3.5rem; flex-wrap: wrap; gap: 1.5rem; }
+
+  .servicos-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+  }
+
+  .servico-card {
+    background: rgba(223,219,206,0.05);
+    border: 1px solid rgba(223,219,206,0.08);
+    border-radius: 20px; padding: 2rem;
+    transition: background 0.3s, transform 0.3s, border-color 0.3s;
+    cursor: default;
+  }
+  .servico-card:hover {
+    background: rgba(73,130,106,0.15);
+    border-color: var(--verde);
+    transform: translateY(-4px);
+  }
+  .servico-card.destaque {
+    background: var(--verde);
+    border-color: var(--verde);
+  }
+
+  .servico-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    background: rgba(237,133,43,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; margin-bottom: 1.2rem;
+  }
+  .servico-card.destaque .servico-icon { background: rgba(255,255,255,0.2); }
+
+  .servico-nome { font-size: 1.05rem; font-weight: 500; color: var(--creme); margin-bottom: 0.6rem; }
+  .servico-desc { font-size: 0.85rem; line-height: 1.7; color: rgba(223,219,206,0.55); }
+  .servico-card.destaque .servico-desc { color: rgba(255,255,255,0.75); }
+
+  /* PROCESSO */
+  .processo-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;
+    margin-top: 3.5rem;
+  }
+  .processo-step { position: relative; }
+  .step-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem; font-weight: 700;
+    color: var(--creme-escuro); line-height: 1; margin-bottom: 1rem;
+  }
+  .step-title { font-size: 1rem; font-weight: 500; margin-bottom: 0.5rem; }
+  .step-desc { font-size: 0.85rem; line-height: 1.7; color: #777; }
+  .step-line {
+    position: absolute; top: 1.8rem; right: -1rem; left: 6rem;
+    height: 1px; background: var(--creme-escuro);
+  }
+  .processo-step:last-child .step-line { display: none; }
+
+  /* CTA FINAL */
+  .cta-final {
+    background: var(--verde);
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .cta-logo-bg {
+    position: absolute; right: -4rem; top: 50%; transform: translateY(-50%);
+    opacity: 0.07; pointer-events: none;
+  }
+  .cta-logo-bg img { width: 420px; height: auto; filter: brightness(0) invert(1); }
+  .cta-final .section-label { color: rgba(255,255,255,0.6); }
+  .cta-final .section-title { color: #fff; margin: 0 auto 1rem; max-width: 600px; }
+  .cta-final .section-title em { color: var(--laranja); }
+  .cta-final p { color: rgba(255,255,255,0.7); margin: 0 auto 2.5rem; max-width: 480px; line-height: 1.8; font-weight: 300; }
+  .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-white { background: #fff; color: var(--verde-escuro); padding: 0.85rem 2rem; border-radius: 100px; text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: transform 0.2s; }
+  .btn-white:hover { transform: translateY(-2px); }
+  .btn-outline-white { border: 1.5px solid rgba(255,255,255,0.5); color: #fff; padding: 0.85rem 2rem; border-radius: 100px; text-decoration: none; font-size: 0.9rem; transition: border-color 0.2s; }
+  .btn-outline-white:hover { border-color: #fff; }
+
+  /* FOOTER */
+  footer {
+    background: var(--escuro); color: rgba(223,219,206,0.5);
+    padding: 3rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  footer .logo-text { color: var(--creme); }
+  footer .logo-text span { color: var(--verde); }
+  footer p { font-size: 0.8rem; }
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links a { color: rgba(223,219,206,0.4); font-size: 0.8rem; text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--creme); }
+
+  /* MOBILE */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; min-height: auto; gap: 3rem; }
+    .hero-visual { display: none; }
+    .sobre { grid-template-columns: 1fr; gap: 3rem; }
+    .sobre-visual { height: 280px; }
+    .servicos-grid { grid-template-columns: 1fr; }
+    .processo-grid { grid-template-columns: 1fr 1fr; }
+    footer { flex-direction: column; text-align: center; padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="logo">
+    <img src="logo.png" alt="Lab Pombo Correio" class="logo-img">
+  </a>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="#processo">Processo</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+  <a href="#contato" class="nav-cta">Fale Conosco</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-content">
+    <div class="hero-badge">Todas as soluções em um só lugar</div>
+    <h1>Marketing que <em>voa</em> com <span class="accent">resultado</span></h1>
+    <p class="hero-desc">Do conceito à conversão — design, captação, edição, branding e tráfego pago reunidos em um único laboratório criativo.</p>
+    <div class="hero-actions">
+      <a href="#contato" class="btn-primary">Quero crescer agora</a>
+      <a href="#servicos" class="btn-ghost">Ver serviços</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="hero-card-stack">
+      <div class="hero-card hc1">
+        <div class="hc-label">Alcance orgânico</div>
+        <div class="hc-value">+342%</div>
+        <div class="hc-sub">últimos 3 meses</div>
+        <div class="hc-bar"><div class="hc-bar-fill"></div></div>
+      </div>
+      <div class="hero-card hc2">
+        <div class="hc-label">ROAS médio</div>
+        <div class="hc-value">4.8×</div>
+        <div class="hc-sub">tráfego pago</div>
+      </div>
+      <div class="hero-card hc3">
+        <div class="hc-label">Projetos</div>
+        <div class="hc-value">60+</div>
+        <div class="hc-sub">entregues</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-section">
+  <div class="ticker-track">
+    <span class="ticker-item">Design Gráfico</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">Tráfego Pago</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">Branding</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">Captação de Imagem</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">Edição de Vídeo</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">Análise Estratégica</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">Social Media</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">Identidade Visual</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">Design Gráfico</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">Tráfego Pago</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">Branding</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">Captação de Imagem</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">Edição de Vídeo</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">Análise Estratégica</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">Social Media</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">Identidade Visual</span><span class="ticker-dot">✦</span>
+  </div>
+</div>
+
+<!-- SOBRE -->
+<section id="sobre">
+  <div class="sobre">
+    <div>
+      <p class="section-label">Quem somos</p>
+      <h2 class="section-title">Um laboratório para <em>transformar</em> marcas</h2>
+      <p class="section-desc">Somos a Laboratório do Pombo Correio — uma agência que une criatividade e estratégia para levar sua mensagem exatamente onde precisa chegar. Como o pombo correio, sua comunicação vai de um ponto a outro com precisão e velocidade.</p>
+      <div class="sobre-stats">
+        <div class="stat-box">
+          <div class="stat-number">60+</div>
+          <div class="stat-label">Projetos entregues</div>
+        </div>
+        <div class="stat-box orange">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Soluções internas</div>
+        </div>
+        <div class="stat-box orange">
+          <div class="stat-number">7</div>
+          <div class="stat-label">Especialidades</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">∞</div>
+          <div class="stat-label">Potencial de alcance</div>
+        </div>
+      </div>
+    </div>
+    <div class="sobre-visual">
+      <div class="sobre-bg-box"></div>
+      <div class="sobre-img-box">
+        <img src="logo.png" alt="Lab Pombo Correio" style="width: 85%; height: 85%; object-fit: contain; opacity: 0.92;">
+      </div>
+      <div class="sobre-quote">
+        <p>"Sua mensagem chega onde precisa, na hora certa."</p>
+        <span>Laboratório do Pombo Correio</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVIÇOS -->
+<section class="servicos" id="servicos">
+  <div class="servicos-header">
+    <div>
+      <p class="section-label">O que fazemos</p>
+      <h2 class="section-title">Tudo que sua marca precisa, <em>aqui</em></h2>
+      <p class="section-desc">Reunimos todas as especialidades de marketing em um único laboratório — sem terceirizar, sem falha de comunicação.</p>
+    </div>
+  </div>
+  <div class="servicos-grid">
+    <div class="servico-card destaque">
+      <div class="servico-icon">🎨</div>
+      <div class="servico-nome">Design Gráfico</div>
+      <div class="servico-desc">Peças visuais que comunicam sua essência — do post ao material impresso, com identidade consistente.</div>
+    </div>
+    <div class="servico-card">
+      <div class="servico-icon">📸</div>
+      <div class="servico-nome">Captação de Imagem</div>
+      <div class="servico-desc">Fotografia e vídeo profissionais que capturam o que nenhuma arte substitui: o real do seu negócio.</div>
+    </div>
+    <div class="servico-card">
+      <div class="servico-icon">🎬</div>
+      <div class="servico-nome">Edição</div>
+      <div class="servico-desc">Montagem, motion e finalização de vídeos para redes sociais, YouTube, campanhas e institucionais.</div>
+    </div>
+    <div class="servico-card">
+      <div class="servico-icon">📊</div>
+      <div class="servico-nome">Análises Estratégicas</div>
+      <div class="servico-desc">Dados transformados em decisões. Relatórios claros, diagnósticos precisos e planejamento orientado por resultado.</div>
+    </div>
+    <div class="servico-card">
+      <div class="servico-icon">🏷️</div>
+      <div class="servico-nome">Branding</div>
+      <div class="servico-desc">Construção e posicionamento de marca — naming, identidade visual, tom de voz e arquitetura de marca.</div>
+    </div>
+    <div class="servico-card">
+      <div class="servico-icon">🎯</div>
+      <div class="servico-nome">Tráfego Pago</div>
+      <div class="servico-desc">Google Ads, Meta Ads e além. Campanhas criadas, gerenciadas e otimizadas para o melhor retorno.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESSO -->
+<section id="processo">
+  <div style="max-width: 700px;">
+    <p class="section-label">Como trabalhamos</p>
+    <h2 class="section-title">Do briefing ao <em>resultado</em></h2>
+    <p class="section-desc">Um processo claro, transparente e colaborativo. Você sabe exatamente o que acontece em cada etapa.</p>
+  </div>
+  <div class="processo-grid">
+    <div class="processo-step">
+      <div class="step-num">01</div>
+      <div class="step-title">Diagnóstico</div>
+      <div class="step-desc">Entendemos seu negócio, público e objetivos antes de qualquer ação.</div>
+      <div class="step-line"></div>
+    </div>
+    <div class="processo-step">
+      <div class="step-num">02</div>
+      <div class="step-title">Estratégia</div>
+      <div class="step-desc">Planejamento completo com canais, cronograma e metas mensuráveis.</div>
+      <div class="step-line"></div>
+    </div>
+    <div class="processo-step">
+      <div class="step-num">03</div>
+      <div class="step-title">Execução</div>
+      <div class="step-desc">Nossa equipe coloca tudo em prática — design, conteúdo, mídia e captação.</div>
+      <div class="step-line"></div>
+    </div>
+    <div class="processo-step">
+      <div class="step-num">04</div>
+      <div class="step-title">Otimização</div>
+      <div class="step-desc">Análises contínuas e ajustes para manter os resultados crescendo.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final" id="contato">
+  <div class="cta-logo-bg">
+    <img src="logo.png" alt="" aria-hidden="true">
+  </div>
+  <p class="section-label">Bora decolar?</p>
+  <h2 class="section-title">Pronto para sua marca <em>voar de verdade?</em></h2>
+  <p>Vamos conversar sobre como o Laboratório do Pombo Correio pode levar sua mensagem mais longe — com estratégia, criatividade e resultado.</p>
+  <div class="cta-actions">
+    <a href="https://wa.me/55SEUNUMERO" class="btn-white">💬 Falar no WhatsApp</a>
+    <a href="mailto:contato@pombo.com.br" class="btn-outline-white">Enviar e-mail</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="logo">
+    <img src="logo.png" alt="Lab Pombo Correio" class="logo-img" style="filter: brightness(0) invert(1); opacity: 0.85;">
+  </a>
+  <p>© 2025 Laboratório do Pombo Correio. Todos os direitos reservados.</p>
+  <nav class="footer-links">
+    <a href="#sobre">Sobre</a>
+    <a href="#servicos">Serviços</a>
+    <a href="#contato">Contato</a>
+  </nav>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+</script>
+
+</body>
+</html>
